@@ -3,14 +3,17 @@ import { omdb } from 'app/API/'
 import { apiEvents } from 'app/utils'
 
 import { SearchInput } from 'app/Search'
-import { ResultsList } from 'app/Results'
+import { ResultsList, Paginate } from 'app/Results'
 
 export default class Root extends Component {
   state = {
-    options: []
+    options: [],
+    overallResults: 0,
+    currentPage: 1,
+    currentSearch: ''
   }
 
-  handleAPINewResults = ({results}) => this.setState({options: results})
+  handleAPINewResults = ({results, overallResults, page}) => this.setState({options: results, overallResults, currentPage: page})
 
   componentWillMount () {
     apiEvents.on('newResults', this.handleAPINewResults)
@@ -21,17 +24,30 @@ export default class Root extends Component {
   }
 
   onTextChange = value => {
+    this.setState({
+      currentSearch: value,
+      currentPage: 1,
+      overallResults: 0
+    })
     omdb.getItems(value)
   }
 
-  render ({ }, { options }) {
+  onPageChanged = (nextPage) => {
+    const valueToSearch = this.state.currentSearch
+    omdb.getItems(valueToSearch, nextPage)
+  }
+
+  render ({ }, { options, ...other }) {
     const autoselectOptions = options.map(item => item.Title)
+    
     return <div>
       <div style={{ display: 'flex', justifyContent: 'center', padding: '50px 0'}}>
         <SearchInput options={autoselectOptions} onTextChange={this.onTextChange} />
       </div>
       <div style={{ display: 'flex', justifyContent: 'center', backgroundColor: 'lightgray' }}>
-        <ResultsList results={options} />
+        <Paginate onPageChanged={this.onPageChanged} {...other}>
+          <ResultsList results={options} />
+        </Paginate>
       </div>
     </div>
   }

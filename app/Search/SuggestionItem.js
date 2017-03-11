@@ -13,6 +13,5 @@ const styles = {
 
 export default function SuggestionItem ({ item, selected, searchValue }) {
   const style = selected ? {...styles.item, ...styles.selected } : {...styles.item}
-  console.log(style)
   return <div style={style} dangerouslySetInnerHTML={{__html: item }}></div>
 }

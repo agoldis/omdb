@@ -34,7 +34,9 @@ export default class SearchInput extends Component {
       itemsList,
       selectionIndex
     } = this.state
-
+    if (itemsList.length === 0) {
+      return
+    }
     let newIndex = selectionIndex + 1
     if (newIndex >= itemsList.length) {
       newIndex = 0
@@ -50,7 +52,9 @@ export default class SearchInput extends Component {
       itemsList,
       selectionIndex
     } = this.state
-
+    if (itemsList.length === 0) {
+      return
+    }
     let newIndex = selectionIndex - 1
     if (newIndex < 0) {
       newIndex = itemsList.length > 0 ? itemsList.length - 1 : 0

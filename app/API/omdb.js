@@ -9,21 +9,33 @@ import {
 class OmdbAPI {
   static baseURL = 'http://www.omdbapi.com'
 
-  _getItems (value) {
+  _getItems (value, page = 1) {
     return agent
       .get(OmdbAPI.baseURL)
       .query({
+        page,
         s: value,
         r: 'json'
       })
       .end()
       .then(({ body, Response }) => {
         if (body.Response === 'True') {
-          return body.Search
+          return {
+            results: body.Search,
+            overallResults: body.totalResults
+          }
         } 
-        return []
+        return {
+          results: [],
+          overallResults: 0
+        }
       })
-      .then(results => apiEvents.emit('newResults', {results}))
+      .then(({results, overallResults}) => apiEvents.emit('newResults', {
+          page,
+          results,
+          overallResults: parseInt(overallResults)
+        })
+      )
   }
 }
 

@@ -1,1 +1,1 @@
-export {default as omdb} from './omdb'
+export { default as omdb } from './omdb'

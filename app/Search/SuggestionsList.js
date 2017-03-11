@@ -3,7 +3,8 @@ import SuggestionItem from './SuggestionItem'
 
 const styles = {
   resultsList: {
-    border: '1px solid lightgrey'
+    border: '1px solid lightgrey',
+    backgoundColor: 'white'
   }
 }
 export default class SuggestionsList extends Component {
