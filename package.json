@@ -2,10 +2,22 @@
   "name": "omdb",
   "version": "1.0.0",
   "main": "index.js",
+  "scripts": {
+    "start": "webpack-dev-server --hot"
+  },
   "repository": {
     "url": "https://github.com/agoldis/omdb.git",
     "type": "git"
   },
   "author": "Andrew Goldis",
-  "license": "MIT"
+  "license": "MIT",
+  "devDependencies": {
+    "babel-core": "^6.23.1",
+    "babel-loader": "^6.4.0",
+    "babel-plugin-transform-react-jsx": "^6.23.0",
+    "html-webpack-plugin": "^2.28.0",
+    "preact": "^7.2.0",
+    "webpack": "^2.2.1",
+    "webpack-dev-server": "^2.4.1"
+  }
 }
