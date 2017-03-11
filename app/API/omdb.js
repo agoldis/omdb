@@ -20,15 +20,9 @@ class OmdbAPI {
       .end()
       .then(({ body, Response }) => {
         if (body.Response === 'True') {
-          return {
-            results: body.Search,
-            overallResults: body.totalResults
-          }
-        } 
-        return {
-          results: [],
-          overallResults: 0
+          return { results: body.Search, overallResults: body.totalResults }
         }
+        return { results: [], overallResults: 0 }
       })
       .then(({results, overallResults}) => apiEvents.emit('newResults', {
           page,
@@ -36,6 +30,17 @@ class OmdbAPI {
           overallResults: parseInt(overallResults)
         })
       )
+  }
+
+  getItem (id) {
+    return agent
+      .get(OmdbAPI.baseURL)
+      .query({
+        plot: 'full',
+        r: 'json',
+        i: id
+      }).end()
+      .then(({ body }) => body)
   }
 }
 

@@ -9,7 +9,9 @@ const styles = {
   },
   item: {
     margin: '10px',
-    maxWidth: '25vw'
+    width: '25vw',
+    backgroundColor: 'white',
+    transition: 'width .5s'
   },
   next: {
     position: 'absolute',
@@ -24,6 +26,10 @@ const styles = {
 }
 
 export default class ResultsList extends Component {
+  state = {
+    selected: null
+  }
+
   renderNext = () => {
     const { pagination } = this.props
     const { showNext, onNextClicked } = pagination
@@ -46,7 +52,7 @@ export default class ResultsList extends Component {
     }
   }
 
-  render ({results, pagination}) {
+  render ({results, pagination, setCurrentItem}, { selected }) {
     return (
       <div style={{position: 'relative'}}>
         {this.renderPrev()}
@@ -56,7 +62,7 @@ export default class ResultsList extends Component {
             if (r.Poster === 'N/A') {
               image = <EmptyPoster />
             }
-            return <div key={index} style={styles.item}>
+            return <div key={index} style={styles.item} onClick={setCurrentItem.bind(null, r)}>
               {image}
               <div><b>{r.Title}</b></div>
               <div>Year: {r.Year}</div>

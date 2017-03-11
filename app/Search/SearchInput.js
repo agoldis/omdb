@@ -67,7 +67,6 @@ export default class SearchInput extends Component {
 
   onKeyDown = (e) => {
     const key = e.key
-    console.log(key)
     switch (key) {
       case 'Escape':
         this.setState({...defaultState})
