@@ -2,6 +2,14 @@ import { h, Component } from 'preact'
 import SuggestionsList from './SuggestionsList'
 import fuzzy from 'fuzzy'
 
+const styles = {
+  input: {
+
+  },
+  label: {
+
+  }
+}
 const defaultState = {
   searchValue: '',
   displayValue: '',
@@ -99,17 +107,18 @@ export default class SearchInput extends Component {
     this.filter(options)
   }
 
-  render ({ options }, { selectionIndex, itemsList, displayValue, updateDisplayOnly }) {
+  render ({ options }, { selectionIndex, itemsList, displayValue }) {
     return (
       <div>
         <div>
-        <label>Search for your movie</label>
-        <input
-          type='text'
-          value={displayValue}
-          onKeyDown={this.onKeyDown}
-          onInput={this.handleInput}
-        />
+          <div style={styles.label}>Search for your movie</div>
+          <input
+            style={styles.inpu}
+            type='text'
+            value={displayValue}
+            onKeyDown={this.onKeyDown}
+            onInput={this.handleInput}
+          />
         </div>
         <SuggestionsList
           itemsList={itemsList.map(res => res.string)}

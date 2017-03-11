@@ -17,7 +17,12 @@ class OmdbAPI {
         r: 'json'
       })
       .end()
-      .then(({ body }) => body.Search)
+      .then(({ body, Response }) => {
+        if (body.Response === 'True') {
+          return body.Search
+        } 
+        return []
+      })
       .then(results => apiEvents.emit('newResults', {results}))
   }
 }
