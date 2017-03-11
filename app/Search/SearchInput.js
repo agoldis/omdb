@@ -4,10 +4,15 @@ import fuzzy from 'fuzzy'
 
 const styles = {
   input: {
-
+    fontFamily: 'Helvetica Neue',
+    fontSize: '14px',
+    height: '25px',
+    minWidth: '70vw'
   },
   label: {
-
+    fontFamily: 'Helvetica Neue',
+    color: 'skyblue',
+    paddingBottom: '5px'
   }
 }
 const defaultState = {
@@ -113,7 +118,7 @@ export default class SearchInput extends Component {
         <div>
           <div style={styles.label}>Search for your movie</div>
           <input
-            style={styles.inpu}
+            style={styles.input}
             type='text'
             value={displayValue}
             onKeyDown={this.onKeyDown}

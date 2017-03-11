@@ -30,7 +30,7 @@ export default class Root extends Component {
       <div style={{ display: 'flex', justifyContent: 'center', padding: '50px 0'}}>
         <SearchInput options={autoselectOptions} onTextChange={this.onTextChange} />
       </div>
-      <div style={{ display: 'flex', justifyContent: 'center' }}>
+      <div style={{ display: 'flex', justifyContent: 'center', backgroundColor: 'lightgray' }}>
         <ResultsList results={options} />
       </div>
     </div>

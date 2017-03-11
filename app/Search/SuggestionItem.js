@@ -2,9 +2,17 @@ import { h } from 'preact'
 
 const styles = {
   selected: {
-    color: 'red'
+    color: 'black',
+    backgroundColor: 'lightgrey'
+  },
+  item: {
+    color: 'grey',
+    padding: '5px 10px',
   }
 }
+
 export default function SuggestionItem ({ item, selected, searchValue }) {
-  return <div style={selected ? styles.selected : null} dangerouslySetInnerHTML={{__html: item }}></div>
+  const style = selected ? {...styles.item, ...styles.selected } : {...styles.item}
+  console.log(style)
+  return <div style={style} dangerouslySetInnerHTML={{__html: item }}></div>
 }
