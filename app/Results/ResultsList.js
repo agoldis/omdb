@@ -1,6 +1,6 @@
 import { h, Component } from 'preact'
 import EmptyPoster from './EmptyPoster'
-
+import { route } from 'preact-router'
 const styles = {
   wrapper: {
     display: 'flex',
@@ -9,9 +9,7 @@ const styles = {
   },
   item: {
     margin: '10px',
-    width: '25vw',
     backgroundColor: 'white',
-    transition: 'width .5s'
   },
   next: {
     position: 'absolute',
@@ -52,7 +50,11 @@ export default class ResultsList extends Component {
     }
   }
 
-  render ({results, pagination, setCurrentItem}, { selected }) {
+  showDetails (itemId) {
+    route(`/item/${itemId}`);
+  }
+
+  render ({results, pagination}, { selected }) {
     return (
       <div style={{position: 'relative'}}>
         {this.renderPrev()}
@@ -62,7 +64,7 @@ export default class ResultsList extends Component {
             if (r.Poster === 'N/A') {
               image = <EmptyPoster />
             }
-            return <div key={index} style={styles.item} onClick={setCurrentItem.bind(null, r)}>
+            return <div key={index} style={styles.item} onClick={this.showDetails.bind(null, r.imdbID)}>
               {image}
               <div><b>{r.Title}</b></div>
               <div>Year: {r.Year}</div>

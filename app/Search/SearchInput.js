@@ -72,9 +72,8 @@ export default class SearchInput extends Component {
         this.setState({...defaultState})
         break;
       case 'Enter':
-        this.setState({
-          itemsList: []
-        })
+        e.preventDefault()
+        this.onEnterPressed()
         break;
       case 'ArrowDown':
         e.preventDefault()
@@ -85,6 +84,12 @@ export default class SearchInput extends Component {
         this.selectPrev()
         break;
     }
+  }
+
+  onEnterPressed = () => {
+    this.setState({
+      itemsList: []
+    })
   }
 
   handleInput = ({ target }) => {

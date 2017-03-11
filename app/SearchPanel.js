@@ -3,15 +3,14 @@ import { h, Component } from 'preact'
 import { omdb } from 'app/API'
 import { apiEvents } from 'app/utils'
 import { SearchInput } from 'app/Search'
-import { ResultsList, Paginate, CurrentItem } from 'app/Results'
+import { ResultsList, Paginate } from 'app/Results'
 
-export default class Home extends Component {
+export default class SearchPanel extends Component {
   state = {
     options: [],
     overallResults: 0,
     currentPage: 1,
-    currentSearch: '',
-    currentItem: null
+    currentSearch: ''
   }
 
   handleAPINewResults = ({results, overallResults, page}) => this.setState({options: results, overallResults, currentPage: page})
@@ -38,7 +37,7 @@ export default class Home extends Component {
     omdb.getItems(valueToSearch, nextPage)
   }
 
-  render ({ }, { options, currentItem, ...other }) {
+  render ({ }, { options, ...other }) {
     const autoselectOptions = options.map(item => item.Title)
 
     return <div>
@@ -47,7 +46,7 @@ export default class Home extends Component {
       </div>
       <div style={{ display: 'flex', justifyContent: 'center', backgroundColor: 'lightgray' }}>
         <Paginate onPageChanged={this.onPageChanged} {...other}>
-          <ResultsList results={options} setCurrentItem={this.setCurrentItem} />
+          <ResultsList results={options} />
         </Paginate>
       </div>
     </div>

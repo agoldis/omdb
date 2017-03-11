@@ -1,5 +1,6 @@
 import { h, Component } from 'preact'
-import EmptyPoster from './EmptyPoster'
+import { route } from 'preact-router'
+import { apiEvents } from 'app/utils'
 
 const styles = {
   base: {
@@ -40,6 +41,21 @@ export default class CurrentItem extends Component {
     open: false
   }
 
+  setCurrentItem = (item) => {
+    if (!item) {
+      this.setState({
+        currentItem: null
+      })
+    } else {
+      omdb.getItem(item.imdbID)
+      .then(fullItem => {
+        this.setState({
+          currentItem: {...fullItem, imdbID: item.imdbID}
+        })
+      })
+    }
+  }
+
   componentDidUpdate = (prevProps, prevState) => {
     if (this.props.currentItem && !this.state.open) {
       this.setState({
@@ -78,11 +94,15 @@ export default class CurrentItem extends Component {
     </div>
   }
 
-  render ({setCurrentItem, currentItem}, {}) {
+  showList () {
+    route('/') 
+  }
+
+  render ({currentItem}, {}) {
     const style = this.state.open ? {...styles.base, ...styles.shown} : {...styles.base, ...styles.hidden}
 
     return <div style={style}>
-      <div onClick={setCurrentItem.bind(null, null)} style={styles.close}>X</div>
+      <div onClick={this.showList} style={styles.close}>X</div>
       {currentItem ? this.renderItem() : null}
     </div>
   }
