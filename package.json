@@ -1,0 +1,11 @@
+{
+  "name": "omdb",
+  "version": "1.0.0",
+  "main": "index.js",
+  "repository": {
+    "url": "https://github.com/agoldis/omdb.git",
+    "type": "git"
+  },
+  "author": "Andrew Goldis",
+  "license": "MIT"
+}
