@@ -1,8 +1,12 @@
 import { h, Component } from 'preact'
 import SuggestionsList from './SuggestionsList'
+import fuzzy from 'fuzzy'
 
 const defaultState = {
-  input: ''
+  searchValue: '',
+  displayValue: '',
+  selectionIndex: 0,
+  itemsList: []
 }
 
 export default class SearchInput extends Component {
@@ -12,10 +16,57 @@ export default class SearchInput extends Component {
     options: []
   }
 
-  onKeyDown = ({ key }) => {
+  selectNext = () => {
+    const {
+      itemsList,
+      selectionIndex
+    } = this.state
+
+    let newIndex = selectionIndex + 1
+    if (newIndex >= itemsList.length) {
+      newIndex = 0
+    }
+    this.setState({
+      selectionIndex: newIndex,
+      displayValue: itemsList[newIndex].original
+    })
+  }
+
+  selectPrev = () => {
+    const {
+      itemsList,
+      selectionIndex
+    } = this.state
+
+    let newIndex = selectionIndex - 1
+    if (newIndex < 0) {
+      newIndex = itemsList.length > 0 ? itemsList.length - 1 : 0
+    }
+    this.setState({
+      displayValue: itemsList[newIndex].original,
+      selectionIndex: newIndex
+    })
+  }
+
+  onKeyDown = (e) => {
+    const key = e.key
+    console.log(key)
     switch (key) {
       case 'Escape':
-        this.setState({ input: defaultState.input })
+        this.setState({...defaultState})
+        break;
+      case 'Enter':
+        this.setState({
+          itemsList: []
+        })
+        break;
+      case 'ArrowDown':
+        e.preventDefault()
+        this.selectNext()
+        break;
+      case 'ArrowUp':
+        e.preventDefault()
+        this.selectPrev()
         break;
     }
   }
@@ -26,34 +77,44 @@ export default class SearchInput extends Component {
     } = this.props
 
     this.setState({
-      input: target.value
+      searchValue: target.value,
+      displayValue: target.value,
+      selectionIndex: defaultState.selectionIndex
     })
+
     onTextChange(target.value)
   }
 
-  filter = item => {
+  filter = options => {
     const {
-      input
+      searchValue
     } = this.state
-    const regex = new RegExp(input)
-    return item.toLowerCase().indexOf(input) >= 0
+
+    const fuzzyOptions = { pre: '<b>', post: '</b>' };
+    const itemsList = fuzzy.filter(searchValue, options, fuzzyOptions)
+    this.setState({ itemsList })
   }
 
-  render ({ options }, { input }) {
-    const itemsList = options.filter(this.filter)
+  componentWillReceiveProps ({options}) {
+    this.filter(options)
+  }
 
+  render ({ options }, { selectionIndex, itemsList, displayValue, updateDisplayOnly }) {
     return (
       <div>
         <div>
         <label>Search for your movie</label>
         <input
           type='text'
-          value={input}
+          value={displayValue}
           onKeyDown={this.onKeyDown}
           onInput={this.handleInput}
         />
         </div>
-        <SuggestionsList itemsList={itemsList} />
+        <SuggestionsList
+          itemsList={itemsList.map(res => res.string)}
+          selectionIndex={selectionIndex}
+        />
       </div>
     )
   }

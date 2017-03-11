@@ -1,18 +1,15 @@
 import { h, Component } from 'preact'
+import SuggestionItem from './SuggestionItem'
 
 export default class SuggestionsList extends Component {
-  render () {
-    const {
-      itemsList
-    } = this.props
-
+  render ({ itemsList, selectionIndex }) {
     if (itemsList.length === 0) {
       return null
     }
 
     return (
       <div>
-        {itemsList.map((item, index) => <div key={index}>{item}</div>)}
+        {itemsList.map((item, index) => <SuggestionItem key={index} selected={selectionIndex === index} item={item} />)}
       </div>
     )
   }
