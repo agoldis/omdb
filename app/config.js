@@ -1,0 +1,1 @@
+export const DEBOUNCE_USER_INPUT = 300

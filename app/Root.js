@@ -1,7 +1,104 @@
 import { h, Component } from 'preact'
+import { SearchInput } from 'app/Search'
+import { omdb } from 'app/API/'
+import { apiEvents } from 'app/utils'
+
+const options = [
+    {
+      "Title": "Dog Day Afternoon",
+      "Year": "1975",
+      "imdbID": "tt0072890",
+      "Type": "movie",
+      "Poster": "https://images-na.ssl-images-amazon.com/images/M/MV5BODExZmE2ZWItYTIzOC00MzI1LTgyNTktMDBhNmFhY2Y4OTQ3XkEyXkFqcGdeQXVyNjU0OTQ0OTY@._V1_SX300.jpg"
+    },
+    {
+      "Title": "Alpha Dog",
+      "Year": "2006",
+      "imdbID": "tt0426883",
+      "Type": "movie",
+      "Poster": "https://images-na.ssl-images-amazon.com/images/M/MV5BMjExODMyNzQzMl5BMl5BanBnXkFtZTYwNzMwNTg3._V1_SX300.jpg"
+    },
+    {
+      "Title": "Ghost Dog: The Way of the Samurai",
+      "Year": "1999",
+      "imdbID": "tt0165798",
+      "Type": "movie",
+      "Poster": "https://images-na.ssl-images-amazon.com/images/M/MV5BZWQxZTJmN2YtMjdmMS00ZTFmLTk5ZDYtODA4ZDA1YWQ2MjMyL2ltYWdlL2ltYWdlXkEyXkFqcGdeQXVyNjU0OTQ0OTY@._V1_SX300.jpg"
+    },
+    {
+      "Title": "Wag the Dog",
+      "Year": "1997",
+      "imdbID": "tt0120885",
+      "Type": "movie",
+      "Poster": "https://images-na.ssl-images-amazon.com/images/M/MV5BMTk0NTEyNzEwMF5BMl5BanBnXkFtZTgwNjcwNTcxMTE@._V1_SX300.jpg"
+    },
+    {
+      "Title": "Dog Soldiers",
+      "Year": "2002",
+      "imdbID": "tt0280609",
+      "Type": "movie",
+      "Poster": "https://images-na.ssl-images-amazon.com/images/M/MV5BMTUzNzAzMDgzOF5BMl5BanBnXkFtZTYwMzQ4NTk2._V1_SX300.jpg"
+    },
+    {
+      "Title": "Man Bites Dog",
+      "Year": "1992",
+      "imdbID": "tt0103905",
+      "Type": "movie",
+      "Poster": "https://images-na.ssl-images-amazon.com/images/M/MV5BMTY3ODg2NzYxOF5BMl5BanBnXkFtZTYwOTA3NzA5._V1_SX300.jpg"
+    },
+    {
+      "Title": "Courage the Cowardly Dog",
+      "Year": "1999–2002",
+      "imdbID": "tt0220880",
+      "Type": "series",
+      "Poster": "https://images-na.ssl-images-amazon.com/images/M/MV5BMTM0NjI5ODAxN15BMl5BanBnXkFtZTcwMTk2ODAwMw@@._V1_SX300.jpg"
+    },
+    {
+      "Title": "Mad Dog and Glory",
+      "Year": "1993",
+      "imdbID": "tt0107473",
+      "Type": "movie",
+      "Poster": "https://images-na.ssl-images-amazon.com/images/M/MV5BMTc1OTc0NDQyNF5BMl5BanBnXkFtZTcwMTEzNDQyMQ@@._V1_SX300.jpg"
+    },
+    {
+      "Title": "My Dog Skip",
+      "Year": "2000",
+      "imdbID": "tt0156812",
+      "Type": "movie",
+      "Poster": "https://images-na.ssl-images-amazon.com/images/M/MV5BMTc1NDgxMjg5MV5BMl5BanBnXkFtZTYwNTUxODc5._V1_SX300.jpg"
+    },
+    {
+      "Title": "Diary of a Wimpy Kid: Dog Days",
+      "Year": "2012",
+      "imdbID": "tt2023453",
+      "Type": "movie",
+      "Poster": "https://images-na.ssl-images-amazon.com/images/M/MV5BMTc2MTk4MTk4Nl5BMl5BanBnXkFtZTcwMzgzOTY2Nw@@._V1_SX300.jpg"
+    }
+  ]
 
 export default class Root extends Component {
-  render () {
-    return <div>Hello world</div>
+  state = {
+    options 
+  }
+
+  handleAPINewResults = ({results}) => this.setState({options: results})
+
+  componentWillMount () {
+    apiEvents.on('newResults', this.handleAPINewResults)
+  }
+
+  componentWillUnmount () {
+    apiEvents.off('newResults', this.handleAPINewResults)
+  }
+
+  onTextChange = value => {
+    omdb.getItems(value)
+  }
+
+  render ({ }, { options = []}) {
+    const autoselectOptions = options.map(item => item.Title)
+    return <div>
+      <SearchInput options={autoselectOptions} onTextChange={this.onTextChange} />
+    </div>
   }
 }
